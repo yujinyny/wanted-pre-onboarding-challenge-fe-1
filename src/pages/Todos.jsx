@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Todos = () => {
@@ -96,8 +97,10 @@ const Todos = () => {
         {todos.length &&
           todos.map((todo) => (
             <li key={todo.id}>
-              <span>제목: {todo.title}</span>
-              <span>내용: {todo.content}</span>
+              <Link to={`/todo/${todo.id}`}>
+                <span>제목: {todo.title}</span>
+                <span>내용: {todo.content}</span>
+              </Link>
               <button onClick={() => onUpdate(todo.id)}>수정</button>
               <button onClick={() => onDelete(todo.id)}>삭제</button>
             </li>
