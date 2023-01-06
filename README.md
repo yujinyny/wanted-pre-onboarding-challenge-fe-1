@@ -12,7 +12,7 @@
 
 - React
 - React Router
-- Redux
+- Recoil
 - styled-components
 - axios
 
@@ -29,7 +29,8 @@
   - [X] 이메일 조건 : 최소 `@`, `.` 포함
   - [X] 비밀번호 조건 : 8자 이상 입력
   - [X] 이메일과 비밀번호가 모두 입력되어 있고, 조건을 만족해야 제출 버튼이 활성화 되도록 해주세요
-  <div><img width="200" alt="image" src="https://user-images.githubusercontent.com/74370531/211033495-8c30af61-3f2d-4963-acfd-7e8ccd1decf4.gif"></div>
+  <div><img width="200" alt="image" src="https://user-images.githubusercontent.com/74370531/211051144-02b7780f-5a7a-4068-a09c-5dd99d25f566.gif">
+  <img width="200" alt="image" src="https://user-images.githubusercontent.com/74370531/211033495-8c30af61-3f2d-4963-acfd-7e8ccd1decf4.gif"></div>
 - 로그인 API를 호출하고, 올바른 응답을 받았을 때 루트 경로로 이동시켜주세요
   - [X] 응답으로 받은 토큰은 로컬 스토리지에 저장해주세요
     <div><img width="400" alt="image" src="https://user-images.githubusercontent.com/74370531/211034324-b6bda3f7-7621-4cea-8c6e-e896165f0c34.gif"></div>
@@ -54,5 +55,6 @@
 - 한 화면 내에서 Todo List와 개별 Todo의 상세를 확인할 수 있도록 해주세요.
   - [X] 새로고침을 했을 때 현재 상태가 유지되어야 합니다.
   - [X] 개별 Todo를 조회 순서에 따라 페이지 뒤로가기를 통하여 조회할 수 있도록 해주세요.
+    <div><img width="400" alt="image" src="https://user-images.githubusercontent.com/74370531/211051330-5bc10d4a-3bc7-457c-bce9-bab3a5a95202.gif"></div>
 - 한 페이지 내에서 새로고침 없이 데이터가 정합성을 갖추도록 구현해주세요
   - [X] 수정되는 Todo의 내용이 목록에서도 실시간으로 반영되어야 합니다
