@@ -7,14 +7,15 @@ import Label from "../components/common/Label";
 import ErrorMessage from "../components/common/ErrorMessage";
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
-import { useDispatch } from "react-redux";
-import { login } from "../redux/auth/action";
+import { useSetRecoilState } from "recoil";
+import { loginState } from "../atom";
 
 const SignUp = () => {
+  const setLogin = useSetRecoilState(loginState);
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { type } = useParams();
-  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -76,7 +77,7 @@ const SignUp = () => {
           navigate("/auth/login");
         } else {
           localStorage.setItem("token", res.data.token);
-          dispatch(login());
+          setLogin(true);
           navigate("/");
         }
         setEmail("");
