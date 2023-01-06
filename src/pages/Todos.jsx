@@ -8,20 +8,20 @@ const Todos = () => {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    console.log("todos", todos);
-  }, [todos]);
-
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/todos`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {
-        setTodos(res.data.data);
-      })
-      .catch((err) => console.log("실패", err));
+    if (localStorage.getItem("token")) {
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/todos`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          setTodos(res.data.data);
+        })
+        .catch((err) => {
+          alert(err.response.data.details);
+        });
+    }
   }, []);
 
   const onCreate = () => {
@@ -43,7 +43,9 @@ const Todos = () => {
         setTitle("");
         setContent("");
       })
-      .catch((err) => console.log("실패", err));
+      .catch((err) => {
+        alert(err.response.data.details);
+      });
   };
 
   const onUpdate = (id) => {
@@ -73,7 +75,9 @@ const Todos = () => {
         setTitle("");
         setContent("");
       })
-      .catch((err) => console.log("실패", err));
+      .catch((err) => {
+        alert(err.response.data.details);
+      });
   };
 
   const onDelete = (id) => {
@@ -88,13 +92,15 @@ const Todos = () => {
         setTitle("");
         setContent("");
       })
-      .catch((err) => console.log("실패", err));
+      .catch((err) => {
+        alert(err.response.data.details);
+      });
   };
 
   return (
     <>
       <ul>
-        {todos.length &&
+        {todos &&
           todos.map((todo) => (
             <li key={todo.id}>
               <Link to={`/todo/${todo.id}`}>

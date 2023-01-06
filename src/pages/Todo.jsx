@@ -8,10 +8,6 @@ const Todo = () => {
   const [todo, setTodo] = useState();
 
   useEffect(() => {
-    console.log("todo", todo);
-  }, [todo]);
-
-  useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/todos/${id}`, {
         headers: {

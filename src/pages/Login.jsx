@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Wrapper from "../components/Wrapper";
@@ -6,13 +6,23 @@ import { AuthH1, InputBox } from "./SignUp";
 import Label from "../components/Label";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/user/action";
 
 const Login = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      alert("이미 로그인 중입니다");
+      navigate("/");
+    }
+  }, [navigate]);
 
   const onSubmit = () => {
     axios
@@ -22,6 +32,7 @@ const Login = () => {
       })
       .then((res) => {
         localStorage.setItem("token", res.data.token);
+        dispatch(login());
         alert(res.data.message);
         navigate("/");
       })
