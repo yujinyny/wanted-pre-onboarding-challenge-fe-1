@@ -1,12 +1,28 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import Wrapper from "../components/Wrapper";
+import { Title, InputBox } from "./SignUp";
+import Label from "../components/Label";
+import Input from "../components/Input";
+import Button from "../components/Button";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/user/action";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      alert("이미 로그인 중입니다");
+      navigate("/");
+    }
+  }, [navigate]);
 
   const onSubmit = () => {
     axios
@@ -16,36 +32,47 @@ const Login = () => {
       })
       .then((res) => {
         localStorage.setItem("token", res.data.token);
-        alert(res.data.message);
+        dispatch(login());
         navigate("/");
       })
-      .catch((err) => console.log("실패", err));
+      .catch((err) => {
+        alert(err.response.data.details);
+      });
   };
 
   return (
-    <>
-      <div>
-        이메일
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-        />
-      </div>
-      <div>
-        비밀번호
-        <input
-          type="text"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        />
-      </div>
-      <button onClick={onSubmit}>로그인</button>
-    </>
+    <Wrapper>
+      <Title>{pathname}</Title>
+      <InputBox>
+        <div>
+          <Label htmlFor="email">이메일</Label>
+          <Input
+            type="email"
+            name="signup"
+            id="email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          />
+        </div>
+      </InputBox>
+      <InputBox>
+        <div>
+          <Label htmlFor="password">비밀번호</Label>
+          <Input
+            type="password"
+            name="signup"
+            id="password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+        </div>
+      </InputBox>
+      <Button onClick={onSubmit}>로그인</Button>
+    </Wrapper>
   );
 };
 
