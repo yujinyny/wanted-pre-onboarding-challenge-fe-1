@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import Wrapper from "../components/Wrapper";
-import styled from "styled-components";
-import { Title } from "./SignUp";
+import Wrapper from "../components/common/Wrapper";
+import { Title } from "./Auth";
+import { useDispatch } from "react-redux";
+import { logout } from "../redux/user/action";
+import TodoDetailCompo from "../components/todo/TodoDetail";
 
 const TodoDetail = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const { id } = useParams();
   const { pathname } = useLocation();
 
@@ -22,43 +27,23 @@ const TodoDetail = () => {
         setTodo(res.data.data);
       })
       .catch((err) => {
-        alert(err.response.data.details);
+        if (err.response.status === 401) {
+          localStorage.removeItem("token");
+          dispatch(logout());
+          alert("유효하지 않는 토큰입니다");
+          navigate("/auth/login");
+        } else {
+          alert(err.response.data.details);
+        }
       });
-  }, [id]);
+  }, [id, dispatch, navigate]);
 
   return (
-    todo && (
-      <Wrapper>
-        <Title>{pathname}</Title>
-        <TodoDetailBlock>
-          <p>
-            <span>제목</span> {todo.title}
-          </p>
-          <p>
-            <span>내용</span> {todo.content}
-          </p>
-          <p>
-            <span>아이디</span> {todo.id}
-          </p>
-          <p>
-            <span>생성 일자</span> {new Date(todo.createdAt).toLocaleString()}
-          </p>
-          <p>
-            <span>수정 일자</span> {new Date(todo.updatedAt).toLocaleString()}
-          </p>
-        </TodoDetailBlock>
-      </Wrapper>
-    )
+    <Wrapper>
+      <Title>{pathname}</Title>
+      {todo && <TodoDetailCompo todo={todo} />}
+    </Wrapper>
   );
 };
 
 export default TodoDetail;
-
-const TodoDetailBlock = styled.div`
-  p:not(:last-of-type) {
-    margin-bottom: 20px;
-  }
-  span {
-    font-weight: 600;
-  }
-`;

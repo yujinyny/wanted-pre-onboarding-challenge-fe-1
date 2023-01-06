@@ -1,9 +1,15 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/user/action";
+import TodoDetail from "./TodoDetail";
 
 const TodoList = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [updateTitle, setUpdateTitle] = useState("");
@@ -24,9 +30,16 @@ const TodoList = () => {
         setTodos(res.data.data);
       })
       .catch((err) => {
-        alert(err.response.data.details);
+        if (err.response.status === 401) {
+          localStorage.removeItem("token");
+          dispatch(logout());
+          alert("유효하지 않는 토큰입니다");
+          navigate("/auth/login");
+        } else {
+          alert(err.response.data.details);
+        }
       });
-  }, []);
+  }, [dispatch, navigate]);
 
   useEffect(() => {
     if (currentTodoId !== "") {
@@ -40,10 +53,17 @@ const TodoList = () => {
           setTodo(res.data.data);
         })
         .catch((err) => {
-          alert(err.response.data.details);
+          if (err.response.status === 401) {
+            localStorage.removeItem("token");
+            dispatch(logout());
+            alert("유효하지 않는 토큰입니다");
+            navigate("/auth/login");
+          } else {
+            alert(err.response.data.details);
+          }
         });
     }
-  }, [currentTodoId]);
+  }, [currentTodoId, dispatch, navigate]);
 
   const onCreate = () => {
     axios
@@ -65,7 +85,14 @@ const TodoList = () => {
         setContent("");
       })
       .catch((err) => {
-        alert(err.response.data.details);
+        if (err.response.status === 401) {
+          localStorage.removeItem("token");
+          dispatch(logout());
+          alert("유효하지 않는 토큰입니다");
+          navigate("/auth/login");
+        } else {
+          alert(err.response.data.details);
+        }
       });
   };
 
@@ -98,7 +125,14 @@ const TodoList = () => {
         setUpdateContent("");
       })
       .catch((err) => {
-        alert(err.response.data.details);
+        if (err.response.status === 401) {
+          localStorage.removeItem("token");
+          dispatch(logout());
+          alert("유효하지 않는 토큰입니다");
+          navigate("/auth/login");
+        } else {
+          alert(err.response.data.details);
+        }
       });
   };
 
@@ -114,7 +148,14 @@ const TodoList = () => {
         setTodo(res.data.data);
       })
       .catch((err) => {
-        alert(err.response.data.details);
+        if (err.response.status === 401) {
+          localStorage.removeItem("token");
+          dispatch(logout());
+          alert("유효하지 않는 토큰입니다");
+          navigate("/auth/login");
+        } else {
+          alert(err.response.data.details);
+        }
       });
   };
 
@@ -151,41 +192,7 @@ const TodoList = () => {
         </InputBox>
       </div>
       {todo ? (
-        <div>
-          <Ul>
-            <li>
-              <Link to={`/todo/${currentTodoId}`}>
-                <p>
-                  <span>제목</span> {todo.title}
-                </p>
-                <p>
-                  <span>내용</span> {todo.content}
-                </p>
-              </Link>
-              <button
-                onClick={() => onDelete(currentTodoId)}
-                className="delete-btn"
-              >
-                삭제
-              </button>
-            </li>
-          </Ul>
-          <InputBox>
-            <Input
-              type="text"
-              placeholder="제목"
-              value={updateTitle}
-              onChange={(e) => setUpdateTitle(e.target.value)}
-            />
-            <Input
-              type="text"
-              placeholder="내용"
-              value={updateContent}
-              onChange={(e) => setUpdateContent(e.target.value)}
-            />
-            <Button onClick={() => onUpdate(currentTodoId)}>수정</Button>
-          </InputBox>
-        </div>
+        <TodoDetail todo={todo} />
       ) : (
         <div>자세히 보고 싶은 투두를 선택해주세요</div>
       )}
