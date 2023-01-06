@@ -1,12 +1,24 @@
 # 본인 소개
 
+안녕하세요, 프론트엔드 개발자 홍유진입니다. ☺️
+
 # 프로젝트 소개
 
 원티드 프리온보딩 챌린지 프론트엔드 코스 사전과제입니다.
 
 [🔗 API](https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api)
 
-## 과제 1 - Login / SignUp
+## ⛏️ 기술 스택
+
+- React
+- React Router
+- Redux
+- styled-components
+- axios
+
+## ✅ 과제
+
+### 1 - Login / SignUp
 
 - /auth 경로에 로그인 / 회원가입 기능을 개발합니다
   - 로그인, 회원가입을 별도의 경로로 분리해도 무방합니다
@@ -27,8 +39,7 @@
   - [X] 어떤 경우든 토큰이 유효하지 않다면 사용자에게 알리고 로그인 페이지로 리다이렉트 시켜주세요
     <div><img width="400" alt="image" src="https://user-images.githubusercontent.com/74370531/211034473-a7479e3c-61e9-4167-809d-70f76577c9f0.png"></div>
 
-
-## 과제 2 - Todo List
+### 2 - Todo List
 
 - Todo List API를 호출하여 Todo List CRUD 기능을 구현해주세요
   - [X] 목록 / 상세 영역으로 나누어 구현해주세요
