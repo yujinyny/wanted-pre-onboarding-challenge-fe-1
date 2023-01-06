@@ -4,18 +4,18 @@ import SignUp from "./pages/Auth";
 import "./App.css";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { login } from "./redux/auth/action";
 import TodoDetail from "./pages/TodoDetail";
+import { useSetRecoilState } from "recoil";
+import { loginState } from "./atom";
 
 function App() {
-  const dispatch = useDispatch();
+  const setLogin = useSetRecoilState(loginState);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      dispatch(login());
+      setLogin(true);
     }
-  }, [dispatch]);
+  }, [setLogin]);
 
   return (
     <BrowserRouter>

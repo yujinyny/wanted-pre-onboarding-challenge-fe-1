@@ -1,25 +1,46 @@
 import axios from "axios";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { logout } from "../../redux/auth/action";
+import { loginState, todosState, todoState } from "../../atom";
 import { TodoInput } from "./TodoList";
 
-const Todo = ({
-  todo,
-  todos,
-  currentTodoId,
-  setTodo,
-  setTodos,
-  setCurrentTodoId,
-}) => {
+const Todo = ({ todoEl }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
+  const setLogin = useSetRecoilState(loginState);
+  const [todos, setTodos] = useRecoilState(todosState);
+  const setTodo = useSetRecoilState(todoState);
 
   const [isEdit, setIsEdit] = useState(false);
-  const [updateTitle, setUpdateTitle] = useState(todo.title);
-  const [updateContent, setUpdateContent] = useState(todo.content);
+  const [updateTitle, setUpdateTitle] = useState(todoEl.title);
+  const [updateContent, setUpdateContent] = useState(todoEl.content);
+  const [currentTodoId, setCurrentTodoId] = useState("");
+
+  useEffect(() => {
+    if (currentTodoId !== "") {
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/todos/${currentTodoId}`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          setTodo(res.data.data);
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            localStorage.removeItem("token");
+            setLogin(false);
+            alert("유효하지 않는 토큰입니다");
+            navigate("/auth/login");
+          } else {
+            alert(err.response.data.details);
+          }
+        });
+    }
+  }, [currentTodoId, navigate, setLogin, setTodo]);
 
   const onUpdate = (id) => {
     axios
@@ -53,7 +74,7 @@ const Todo = ({
       .catch((err) => {
         if (err.response.status === 401) {
           localStorage.removeItem("token");
-          dispatch(logout());
+          setLogin(false);
           alert("유효하지 않는 토큰입니다");
           navigate("/auth/login");
         } else {
@@ -76,7 +97,7 @@ const Todo = ({
       .catch((err) => {
         if (err.response.status === 401) {
           localStorage.removeItem("token");
-          dispatch(logout());
+          setLogin(false);
           alert("유효하지 않는 토큰입니다");
           navigate("/auth/login");
         } else {
@@ -107,16 +128,16 @@ const Todo = ({
       ) : (
         <TodoDefaultContent
           onClick={() => {
-            setCurrentTodoId(todo.id);
+            setCurrentTodoId(todoEl.id);
           }}
         >
           <p>
             <span>제목</span>
-            {todo.title}
+            {todoEl.title}
           </p>
           <p>
             <span>내용</span>
-            {todo.content}
+            {todoEl.content}
           </p>
         </TodoDefaultContent>
       )}
@@ -125,7 +146,7 @@ const Todo = ({
           <div>
             <button
               onClick={() => {
-                onUpdate(todo.id);
+                onUpdate(todoEl.id);
               }}
             >
               저장
@@ -149,7 +170,7 @@ const Todo = ({
         )}
         <button
           onClick={() => {
-            onDelete(todo.id);
+            onDelete(todoEl.id);
           }}
         >
           삭제

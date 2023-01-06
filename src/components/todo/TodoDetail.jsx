@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { todoState } from "../../atom";
 
-const TodoDetail = ({ todo }) => {
+const TodoDetail = () => {
+  const todo = useRecoilValue(todoState);
+
   return (
     <Block>
       <Link to={`/todo/${todo.id}`}>

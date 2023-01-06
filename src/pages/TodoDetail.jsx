@@ -1,20 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Wrapper from "../components/common/Wrapper";
 import { Title } from "./Auth";
-import { useDispatch } from "react-redux";
-import { logout } from "../redux/auth/action";
 import TodoDetailCompo from "../components/todo/TodoDetail";
+import { loginState, todoState } from "../atom";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 const TodoDetail = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const { id } = useParams();
   const { pathname } = useLocation();
 
-  const [todo, setTodo] = useState();
+  const setLogin = useSetRecoilState(loginState);
+  const [todo, setTodo] = useRecoilState(todoState);
 
   useEffect(() => {
     axios
@@ -29,19 +28,19 @@ const TodoDetail = () => {
       .catch((err) => {
         if (err.response.status === 401) {
           localStorage.removeItem("token");
-          dispatch(logout());
+          setLogin(false);
           alert("유효하지 않는 토큰입니다");
           navigate("/auth/login");
         } else {
           alert(err.response.data.details);
         }
       });
-  }, [id, dispatch, navigate]);
+  }, [id, navigate, setLogin, setTodo]);
 
   return (
     <Wrapper>
       <Title>{pathname}</Title>
-      {todo && <TodoDetailCompo todo={todo} />}
+      {todo && <TodoDetailCompo />}
     </Wrapper>
   );
 };

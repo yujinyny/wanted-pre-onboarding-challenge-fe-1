@@ -3,16 +3,15 @@ import Title from "../components/common/Title";
 import Wrapper from "../components/common/Wrapper";
 import TodoList from "../components/todo/TodoList";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../redux/auth/action";
+import { useRecoilState } from "recoil";
+import { loginState } from "../atom";
 
 const Home = () => {
-  const dispatch = useDispatch();
-  const { isLogin } = useSelector((state) => state);
+  const [isLogin, setLogin] = useRecoilState(loginState);
 
   const onLogout = () => {
     localStorage.removeItem("token");
-    dispatch(logout());
+    setLogin(false);
   };
 
   return (
