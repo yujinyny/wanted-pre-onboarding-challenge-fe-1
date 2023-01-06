@@ -56,7 +56,6 @@ const SignUp = () => {
         password,
       })
       .then((res) => {
-        alert(res.data.message);
         navigate("/auth/login");
       })
       .catch((err) => {
@@ -66,7 +65,7 @@ const SignUp = () => {
 
   return (
     <Wrapper>
-      <AuthH1>{pathname}</AuthH1>
+      <Title>{pathname}</Title>
       <InputBox>
         <div>
           <Label htmlFor="email">이메일</Label>
@@ -115,7 +114,7 @@ export const InputBox = styled.div`
   }
 `;
 
-export const AuthH1 = styled.h1`
+export const Title = styled.h1`
   font-size: 32px;
   font-weight: 600;
   margin-bottom: 60px;

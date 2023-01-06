@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Wrapper from "../components/Wrapper";
-import { AuthH1, InputBox } from "./SignUp";
+import { Title, InputBox } from "./SignUp";
 import Label from "../components/Label";
 import Input from "../components/Input";
 import Button from "../components/Button";
@@ -33,7 +33,6 @@ const Login = () => {
       .then((res) => {
         localStorage.setItem("token", res.data.token);
         dispatch(login());
-        alert(res.data.message);
         navigate("/");
       })
       .catch((err) => {
@@ -43,7 +42,7 @@ const Login = () => {
 
   return (
     <Wrapper>
-      <AuthH1>{pathname}</AuthH1>
+      <Title>{pathname}</Title>
       <InputBox>
         <div>
           <Label htmlFor="email">이메일</Label>

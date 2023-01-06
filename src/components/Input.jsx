@@ -7,6 +7,9 @@ const Input = (props) => {
 export default Input;
 
 const InputBlock = styled.input`
-  padding: 5px 10px;
+  padding: 7px 10px;
   border-radius: 5px;
+  :focus {
+    background-color: lightgray;
+  }
 `;

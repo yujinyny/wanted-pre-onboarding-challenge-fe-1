@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import H1 from "../components/H1";
+import Title from "../components/Title";
 import Wrapper from "../components/Wrapper";
-import Todos from "./Todos";
+import Todos from "../components/Todos";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/user/action";
@@ -18,7 +18,7 @@ const Home = () => {
   return (
     <Wrapper>
       <Box>
-        <H1>Auth</H1>
+        <Title>Auth</Title>
         {isLogin ? (
           <Ul>
             <li>
@@ -41,8 +41,8 @@ const Home = () => {
         )}
       </Box>
       <Box>
-        <H1>Todos</H1>
-        <Todos />
+        <Title>Todos</Title>
+        {isLogin ? <Todos /> : <span>로그인 후 조회 가능합니다</span>}
       </Box>
     </Wrapper>
   );

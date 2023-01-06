@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
-const H1 = ({ children }) => {
+const Title = ({ children }) => {
   return <H1Block>{children}</H1Block>;
 };
 
-export default H1;
+export default Title;
 
 const H1Block = styled.h1`
   font-size: 32px;
