@@ -5,6 +5,7 @@ import SignUp from "./pages/SignUp";
 import Todo from "./pages/Todo";
 import Todos from "./pages/Todos";
 import "./App.css";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <Route path="/auth/login" element={<Login />} />
         <Route path="/todos" element={<Todos />} />
         <Route path="/todo/:id" element={<Todo />} />
-        <Route path="*" element={<Home />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

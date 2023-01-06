@@ -1,9 +1,16 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import Wrapper from "../components/Wrapper";
+import styled from "styled-components";
+import Label from "../components/Label";
+import ErrorMessage from "../components/ErrorMessage";
+import Input from "../components/Input";
+import Button from "../components/Button";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -52,38 +59,65 @@ const SignUp = () => {
         alert(res.data.message);
         navigate("/auth/login");
       })
-      .catch((err) => console.log("실패", err));
+      .catch((err) => {
+        alert(err.response.data.details);
+      });
   };
 
   return (
-    <>
-      <div>
-        이메일
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-        />
-      </div>
-      {emailMessage && <div>최소 @, . 포함</div>}
-      <div>
-        비밀번호
-        <input
-          type="text"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        />
-      </div>
-      {pwMessage && <div>8자 이상 입력</div>}
-      <button onClick={onSubmit} disabled={!(emailSuccess && pwSuccess)}>
+    <Wrapper>
+      <AuthH1>{pathname}</AuthH1>
+      <InputBox>
+        <div>
+          <Label htmlFor="email">이메일</Label>
+          <Input
+            type="email"
+            name="signup"
+            id="email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          />
+        </div>
+        {emailMessage && <ErrorMessage text="최소 @, . 포함" />}
+      </InputBox>
+      <InputBox>
+        <div>
+          <Label htmlFor="password">비밀번호</Label>
+          <Input
+            type="password"
+            name="signup"
+            id="password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+        </div>
+        {pwMessage && <ErrorMessage text="8자 이상 입력" />}
+      </InputBox>
+      <Button onClick={onSubmit} disabled={!(emailSuccess && pwSuccess)}>
         회원가입
-      </button>
-    </>
+      </Button>
+    </Wrapper>
   );
 };
 
 export default SignUp;
+
+export const InputBox = styled.div`
+  margin-bottom: 30px;
+
+  > div:first-child {
+    display: flex;
+    align-items: center;
+  }
+`;
+
+export const AuthH1 = styled.h1`
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 60px;
+  text-align: center;
+`;
