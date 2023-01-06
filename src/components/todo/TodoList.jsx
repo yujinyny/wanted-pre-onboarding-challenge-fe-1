@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/user/action";
 import TodoDetail from "./TodoDetail";
+import Todo from "./Todo";
 
 const TodoList = () => {
   const navigate = useNavigate();
@@ -162,19 +163,16 @@ const TodoList = () => {
   return (
     <Block>
       <div>
-        <Ul>
+        <ul>
           {todos &&
             todos.map((todo) => (
-              <li key={todo.id} onClick={() => setCurrentTodoId(todo.id)}>
-                <p>
-                  <span>제목</span> {todo.title}
-                </p>
-                <p>
-                  <span>내용</span> {todo.content}
-                </p>
-              </li>
+              <Todo
+                key={todo.id}
+                todo={todo}
+                setCurrentTodoId={setCurrentTodoId}
+              />
             ))}
-        </Ul>
+        </ul>
         <InputBox>
           <Input
             type="text"
@@ -210,28 +208,6 @@ const Block = styled.div`
   }
   > div:first-child {
     border-right: 2px solid white;
-  }
-`;
-
-const Ul = styled.ul`
-  li {
-    margin-bottom: 30px;
-    cursor: pointer;
-  }
-  li:hover {
-    color: lightgray;
-  }
-  li p:first-child {
-    margin-bottom: 10px;
-  }
-  li span {
-    font-weight: 600;
-  }
-  .delete-btn {
-    width: 100%;
-    text-align: right;
-    margin-top: 10px;
-    cursor: pointer;
   }
 `;
 
