@@ -20,7 +20,6 @@ const TodoDetail = () => {
       })
       .then((res) => {
         setTodo(res.data.data);
-        console.log(res.data.data);
       })
       .catch((err) => {
         alert(err.response.data.details);
