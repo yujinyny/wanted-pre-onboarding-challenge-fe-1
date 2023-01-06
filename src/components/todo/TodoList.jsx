@@ -98,7 +98,7 @@ const TodoList = () => {
   return (
     <Block>
       <div>
-        <ul>
+        <Todos>
           {todos &&
             todos.map((todo) => (
               <Todo
@@ -110,8 +110,8 @@ const TodoList = () => {
                 setTodos={setTodos}
               />
             ))}
-        </ul>
-        <InputBox>
+        </Todos>
+        <div>
           <TodoInput
             type="text"
             placeholder="제목"
@@ -125,7 +125,7 @@ const TodoList = () => {
             onChange={(e) => setContent(e.target.value)}
           />
           <Button onClick={onCreate}>추가</Button>
-        </InputBox>
+        </div>
       </div>
       {todo ? (
         <TodoDetail todo={todo} />
@@ -149,7 +149,13 @@ const Block = styled.div`
   }
 `;
 
-const InputBox = styled.div``;
+const Todos = styled.ul`
+  height: 300px;
+  margin-bottom: 10px;
+  padding-right: 10px;
+  overflow-y: scroll;
+`;
+
 export const TodoInput = styled.input`
   padding: 7px 10px;
   border: 1px solid gray;

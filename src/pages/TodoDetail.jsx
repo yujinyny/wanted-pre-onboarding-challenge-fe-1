@@ -4,7 +4,7 @@ import axios from "axios";
 import Wrapper from "../components/common/Wrapper";
 import { Title } from "./Auth";
 import { useDispatch } from "react-redux";
-import { logout } from "../redux/user/action";
+import { logout } from "../redux/auth/action";
 import TodoDetailCompo from "../components/todo/TodoDetail";
 
 const TodoDetail = () => {

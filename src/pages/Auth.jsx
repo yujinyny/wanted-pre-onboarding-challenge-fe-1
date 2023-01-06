@@ -8,7 +8,7 @@ import ErrorMessage from "../components/common/ErrorMessage";
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
 import { useDispatch } from "react-redux";
-import { login } from "../redux/user/action";
+import { login } from "../redux/auth/action";
 
 const SignUp = () => {
   const navigate = useNavigate();

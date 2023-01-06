@@ -5,7 +5,7 @@ import "./App.css";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { login } from "./redux/user/action";
+import { login } from "./redux/auth/action";
 import TodoDetail from "./pages/TodoDetail";
 
 function App() {
