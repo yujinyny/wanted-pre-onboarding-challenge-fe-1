@@ -6,7 +6,14 @@ import styled from "styled-components";
 import { logout } from "../../redux/auth/action";
 import { TodoInput } from "./TodoList";
 
-const Todo = ({ todo, todos, setCurrentTodoId, setTodo, setTodos }) => {
+const Todo = ({
+  todo,
+  todos,
+  currentTodoId,
+  setTodo,
+  setTodos,
+  setCurrentTodoId,
+}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -38,7 +45,7 @@ const Todo = ({ todo, todos, setCurrentTodoId, setTodo, setTodos }) => {
             }
           }),
         ]);
-        setTodo(res.data.data);
+        if (id === currentTodoId) setTodo(res.data.data);
         setUpdateTitle("");
         setUpdateContent("");
         setIsEdit(false);
@@ -64,7 +71,7 @@ const Todo = ({ todo, todos, setCurrentTodoId, setTodo, setTodos }) => {
       })
       .then((res) => {
         setTodos([...todos.filter((todo) => todo.id !== id)]);
-        setTodo(res.data.data);
+        if (id === currentTodoId) setTodo(res.data.data);
       })
       .catch((err) => {
         if (err.response.status === 401) {

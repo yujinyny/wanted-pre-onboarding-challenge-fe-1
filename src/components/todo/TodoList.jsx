@@ -99,17 +99,21 @@ const TodoList = () => {
     <Block>
       <div>
         <Todos>
-          {todos &&
+          {todos.length ? (
             todos.map((todo) => (
               <Todo
                 key={todo.id}
                 todo={todo}
                 todos={todos}
-                setCurrentTodoId={setCurrentTodoId}
+                currentTodoId={currentTodoId}
                 setTodo={setTodo}
                 setTodos={setTodos}
+                setCurrentTodoId={setCurrentTodoId}
               />
-            ))}
+            ))
+          ) : (
+            <div>투두 리스트가 없습니다</div>
+          )}
         </Todos>
         <div>
           <TodoInput
