@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const TodoDetail = ({ todo }) => {
   return (
-    <TodoDetailBlock>
+    <Block>
       <Link to={`/todo/${todo.id}`}>
         <p>
           <span>제목</span> {todo.title}
@@ -21,13 +21,13 @@ const TodoDetail = ({ todo }) => {
           <span>수정 일자</span> {new Date(todo.updatedAt).toLocaleString()}
         </p>
       </Link>
-    </TodoDetailBlock>
+    </Block>
   );
 };
 
 export default TodoDetail;
 
-const TodoDetailBlock = styled.div`
+const Block = styled.div`
   p:not(:last-of-type) {
     margin-bottom: 20px;
   }

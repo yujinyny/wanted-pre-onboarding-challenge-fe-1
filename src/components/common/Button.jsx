@@ -2,15 +2,15 @@ import styled from "styled-components";
 
 const Button = ({ onClick, disabled, children }) => {
   return (
-    <ButtonBlock onClick={onClick} disabled={disabled}>
+    <Block onClick={onClick} disabled={disabled}>
       {children}
-    </ButtonBlock>
+    </Block>
   );
 };
 
 export default Button;
 
-const ButtonBlock = styled.button`
+const Block = styled.button`
   width: 262px;
   height: 40px;
   background-color: white;

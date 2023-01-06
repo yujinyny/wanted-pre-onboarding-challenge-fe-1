@@ -79,7 +79,7 @@ const Todo = ({ todo, todos, setCurrentTodoId, setTodo, setTodos }) => {
   };
 
   return (
-    <TodoBlock>
+    <LiBlock>
       {isEdit ? (
         <TodoEditContent>
           <p>
@@ -148,13 +148,13 @@ const Todo = ({ todo, todos, setCurrentTodoId, setTodo, setTodos }) => {
           삭제
         </button>
       </TodoButtons>
-    </TodoBlock>
+    </LiBlock>
   );
 };
 
 export default Todo;
 
-const TodoBlock = styled.li`
+const LiBlock = styled.li`
   margin-bottom: 30px;
   display: flex;
   justify-content: space-between;

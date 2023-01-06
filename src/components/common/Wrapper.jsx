@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
 const Wrapper = ({ children }) => {
-  return <WrapperBlock>{children}</WrapperBlock>;
+  return <Block>{children}</Block>;
 };
 
 export default Wrapper;
 
-const WrapperBlock = styled.div`
+const Block = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
