@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Title from "../components/Title";
 import Wrapper from "../components/Wrapper";
-import Todos from "../components/Todos";
+import TodoList from "../components/TodoList";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/user/action";
@@ -42,7 +42,7 @@ const Home = () => {
       </Box>
       <Box>
         <Title>Todos</Title>
-        {isLogin ? <Todos /> : <span>로그인 후 조회 가능합니다</span>}
+        {isLogin ? <TodoList /> : <span>로그인 후 조회 가능합니다</span>}
       </Box>
     </Wrapper>
   );

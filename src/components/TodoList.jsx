@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
-const Todos = () => {
+const TodoList = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [updateTitle, setUpdateTitle] = useState("");
@@ -193,7 +193,7 @@ const Todos = () => {
   );
 };
 
-export default Todos;
+export default TodoList;
 
 const Block = styled.div`
   display: flex;
