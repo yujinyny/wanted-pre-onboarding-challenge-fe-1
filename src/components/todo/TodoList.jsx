@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { logout } from "../../redux/user/action";
+import { logout } from "../../redux/auth/action";
 import TodoDetail from "./TodoDetail";
 import Todo from "./Todo";
 
@@ -13,8 +13,6 @@ const TodoList = () => {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [updateTitle, setUpdateTitle] = useState("");
-  const [updateContent, setUpdateContent] = useState("");
 
   const [currentTodoId, setCurrentTodoId] = useState("");
   const [todo, setTodo] = useState();
@@ -97,69 +95,6 @@ const TodoList = () => {
       });
   };
 
-  const onUpdate = (id) => {
-    axios
-      .put(
-        `${process.env.REACT_APP_API_URL}/todos/${id}`,
-        {
-          title,
-          content,
-        },
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      )
-      .then((res) => {
-        setTodos([
-          ...todos.map((todo) => {
-            if (todo.id === res.data.data.id) {
-              return res.data.data;
-            } else {
-              return todo;
-            }
-          }),
-        ]);
-        setTodo(res.data.data);
-        setUpdateTitle("");
-        setUpdateContent("");
-      })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          localStorage.removeItem("token");
-          dispatch(logout());
-          alert("유효하지 않는 토큰입니다");
-          navigate("/auth/login");
-        } else {
-          alert(err.response.data.details);
-        }
-      });
-  };
-
-  const onDelete = (id) => {
-    axios
-      .delete(`${process.env.REACT_APP_API_URL}/todos/${id}`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {
-        setTodos([...todos.filter((todo) => todo.id !== id)]);
-        setTodo(res.data.data);
-      })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          localStorage.removeItem("token");
-          dispatch(logout());
-          alert("유효하지 않는 토큰입니다");
-          navigate("/auth/login");
-        } else {
-          alert(err.response.data.details);
-        }
-      });
-  };
-
   return (
     <Block>
       <div>
@@ -169,18 +104,21 @@ const TodoList = () => {
               <Todo
                 key={todo.id}
                 todo={todo}
+                todos={todos}
                 setCurrentTodoId={setCurrentTodoId}
+                setTodo={setTodo}
+                setTodos={setTodos}
               />
             ))}
         </ul>
         <InputBox>
-          <Input
+          <TodoInput
             type="text"
             placeholder="제목"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <Input
+          <TodoInput
             type="text"
             placeholder="내용"
             value={content}
@@ -212,7 +150,7 @@ const Block = styled.div`
 `;
 
 const InputBox = styled.div``;
-const Input = styled.input`
+export const TodoInput = styled.input`
   padding: 7px 10px;
   border: 1px solid gray;
   :focus {

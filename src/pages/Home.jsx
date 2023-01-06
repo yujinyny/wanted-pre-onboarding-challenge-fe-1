@@ -4,7 +4,7 @@ import Wrapper from "../components/common/Wrapper";
 import TodoList from "../components/todo/TodoList";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../redux/user/action";
+import { logout } from "../redux/auth/action";
 
 const Home = () => {
   const dispatch = useDispatch();
