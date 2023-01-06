@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
 const Input = (props) => {
-  return <InputBlock {...props} />;
+  return <Block {...props} />;
 };
 
 export default Input;
 
-const InputBlock = styled.input`
+const Block = styled.input`
   padding: 7px 10px;
   border-radius: 5px;
   :focus {

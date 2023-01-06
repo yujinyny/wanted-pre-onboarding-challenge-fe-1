@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
-import Wrapper from "../components/Wrapper";
+import Wrapper from "../components/common/Wrapper";
 import styled from "styled-components";
-import Label from "../components/Label";
-import ErrorMessage from "../components/ErrorMessage";
-import Input from "../components/Input";
-import Button from "../components/Button";
+import Label from "../components/common/Label";
+import ErrorMessage from "../components/common/ErrorMessage";
+import Input from "../components/common/Input";
+import Button from "../components/common/Button";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/auth/action";
 
 const SignUp = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { type } = useParams();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,6 +23,13 @@ const SignUp = () => {
   const [pwSuccess, setPwSuccess] = useState(false);
   const [emailMessage, setEmailMessage] = useState(false);
   const [pwMessage, setPwMessage] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      alert("이미 로그인 중입니다");
+      navigate("/");
+    }
+  }, [navigate]);
 
   // 유효성 검사
   useEffect(() => {
@@ -51,12 +62,25 @@ const SignUp = () => {
 
   const onSubmit = () => {
     axios
-      .post(`${process.env.REACT_APP_API_URL}/users/create`, {
-        email,
-        password,
-      })
+      .post(
+        `${process.env.REACT_APP_API_URL}/users/${
+          type === "signUp" ? "create" : "login"
+        }`,
+        {
+          email,
+          password,
+        }
+      )
       .then((res) => {
-        navigate("/auth/login");
+        if (type === "signUp") {
+          navigate("/auth/login");
+        } else {
+          localStorage.setItem("token", res.data.token);
+          dispatch(login());
+          navigate("/");
+        }
+        setEmail("");
+        setPassword("");
       })
       .catch((err) => {
         alert(err.response.data.details);
@@ -97,7 +121,7 @@ const SignUp = () => {
         {pwMessage && <ErrorMessage text="8자 이상 입력" />}
       </InputBox>
       <Button onClick={onSubmit} disabled={!(emailSuccess && pwSuccess)}>
-        회원가입
+        {type === "signUp" ? "회원가입" : "로그인"}
       </Button>
     </Wrapper>
   );

@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import Title from "../components/Title";
-import Wrapper from "../components/Wrapper";
-import TodoList from "../components/TodoList";
+import Title from "../components/common/Title";
+import Wrapper from "../components/common/Wrapper";
+import TodoList from "../components/todo/TodoList";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../redux/user/action";
+import { logout } from "../redux/auth/action";
 
 const Home = () => {
   const dispatch = useDispatch();
