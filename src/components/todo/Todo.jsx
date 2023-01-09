@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -18,29 +18,28 @@ const Todo = ({ todoEl }) => {
   const [updateContent, setUpdateContent] = useState(todoEl.content);
   const [currentTodoId, setCurrentTodoId] = useState("");
 
-  useEffect(() => {
-    if (currentTodoId !== "") {
-      axios
-        .get(`${process.env.REACT_APP_API_URL}/todos/${currentTodoId}`, {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        })
-        .then((res) => {
-          setTodo(res.data.data);
-        })
-        .catch((err) => {
-          if (err.response.status === 401) {
-            localStorage.removeItem("token");
-            setLogin(false);
-            alert("유효하지 않는 토큰입니다");
-            navigate("/auth/login");
-          } else {
-            alert(err.response.data.details);
-          }
-        });
-    }
-  }, [currentTodoId, navigate, setLogin, setTodo]);
+  const onClickTodo = (id) => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/todos/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        setTodo(res.data.data);
+        setCurrentTodoId(id);
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          localStorage.removeItem("token");
+          setLogin(false);
+          alert("유효하지 않는 토큰입니다");
+          navigate("/auth/login");
+        } else {
+          alert(err.response.data.details);
+        }
+      });
+  };
 
   const onUpdate = (id) => {
     axios
@@ -128,7 +127,7 @@ const Todo = ({ todoEl }) => {
       ) : (
         <TodoDefaultContent
           onClick={() => {
-            setCurrentTodoId(todoEl.id);
+            onClickTodo(todoEl.id);
           }}
         >
           <p>
