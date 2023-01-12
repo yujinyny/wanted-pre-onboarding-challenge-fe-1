@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { deleteTodo, getTodo, updateTodo } from "../../api/todo";
 import { loginState } from "../../atom/auth";
 import { detailTodoState, todosState } from "../../atom/todo";
 import { TodoType } from "../../types/todo";
@@ -23,12 +23,7 @@ const Todo = ({ todo }: { todo: TodoType }) => {
   const [currentTodoId, setCurrentTodoId] = useState("");
 
   const onClickTodo = (id: string) => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/todos/${id}`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
+    getTodo(id)
       .then((res) => {
         setTodo(res.data.data);
         setCurrentTodoId(id);
@@ -46,19 +41,7 @@ const Todo = ({ todo }: { todo: TodoType }) => {
   };
 
   const onUpdate = (id: string) => {
-    axios
-      .put(
-        `${process.env.REACT_APP_API_URL}/todos/${id}`,
-        {
-          title: updateTitle,
-          content: updateContent,
-        },
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      )
+    updateTodo(id, updateTitle, updateContent)
       .then((res) => {
         setTodos([
           ...todos.map((todo) => {
@@ -87,12 +70,7 @@ const Todo = ({ todo }: { todo: TodoType }) => {
   };
 
   const onDelete = (id: string) => {
-    axios
-      .delete(`${process.env.REACT_APP_API_URL}/todos/${id}`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
+    deleteTodo(id)
       .then((res) => {
         setTodos([...todos.filter((todo) => todo.id !== id)]);
         if (id === currentTodoId) setTodo(res.data.data);

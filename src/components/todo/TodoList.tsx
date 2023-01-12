@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import styled from "styled-components";
 import TodoDetail from "./TodoDetail";
 import Todo from "./Todo";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loginState } from "../../atom/auth";
 import { detailTodoState, todosState } from "../../atom/todo";
+import { createTodo, getTodos } from "../../api/todo";
 
 const TodoList = () => {
   const navigate = useNavigate();
@@ -19,12 +19,7 @@ const TodoList = () => {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/todos`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
+    getTodos()
       .then((res) => {
         setTodos(res.data.data);
       })
@@ -41,19 +36,7 @@ const TodoList = () => {
   }, [navigate, setLogin, setTodos]);
 
   const onCreate = () => {
-    axios
-      .post(
-        `${process.env.REACT_APP_API_URL}/todos`,
-        {
-          title,
-          content,
-        },
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      )
+    createTodo(title, content)
       .then((res) => {
         setTodos([...todos, res.data.data]);
         setTitle("");

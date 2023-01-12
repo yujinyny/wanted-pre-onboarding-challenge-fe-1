@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import Wrapper from "../components/common/Wrapper";
 import { Title } from "./Auth";
 import TodoDetailCompo from "../components/todo/TodoDetail";
 import { loginState } from "../atom/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { detailTodoState } from "../atom/todo";
+import { getTodo } from "../api/todo";
 
 const TodoDetail = () => {
   const navigate = useNavigate();
@@ -17,12 +17,7 @@ const TodoDetail = () => {
   const [todo, setTodo] = useRecoilState(detailTodoState);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/todos/${id}`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
+    getTodo(id as string)
       .then((res) => {
         setTodo(res.data.data);
       })

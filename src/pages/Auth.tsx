@@ -1,6 +1,5 @@
 import { useState, useEffect, SetStateAction } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
-import axios from "axios";
 import Wrapper from "../components/common/Wrapper";
 import styled from "styled-components";
 import Label from "../components/common/Label";
@@ -9,6 +8,7 @@ import Input from "../components/common/Input";
 import Button from "../components/common/Button";
 import { useSetRecoilState } from "recoil";
 import { loginState } from "../atom/auth";
+import { auth } from "../api/auth";
 
 const SignUp = () => {
   const setLogin = useSetRecoilState(loginState);
@@ -62,16 +62,7 @@ const SignUp = () => {
   }, [email, password]);
 
   const onSubmit = () => {
-    axios
-      .post(
-        `${process.env.REACT_APP_API_URL}/users/${
-          type === "signUp" ? "create" : "login"
-        }`,
-        {
-          email,
-          password,
-        }
-      )
+    auth(type as string, email, password)
       .then((res) => {
         if (type === "signUp") {
           navigate("/auth/login");
