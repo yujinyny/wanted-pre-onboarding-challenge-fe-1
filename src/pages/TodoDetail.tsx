@@ -6,7 +6,7 @@ import TodoDetailCompo from "../components/todo/TodoDetail";
 import { loginState } from "../atom/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { detailTodoState } from "../atom/todo";
-import { getTodo } from "../api/todo";
+import { getTodoById } from "../api/todo";
 
 const TodoDetail = () => {
   const navigate = useNavigate();
@@ -17,19 +17,12 @@ const TodoDetail = () => {
   const [todo, setTodo] = useRecoilState(detailTodoState);
 
   useEffect(() => {
-    getTodo(id as string)
+    getTodoById(id as string)
       .then((res) => {
-        setTodo(res.data.data);
+        setTodo(res.data);
       })
       .catch((err) => {
-        if (err.response.status === 401) {
-          localStorage.removeItem("token");
-          setLogin(false);
-          alert("유효하지 않는 토큰입니다");
-          navigate("/auth/login");
-        } else {
-          alert(err.response.data.details);
-        }
+        alert(err.response.data.details);
       });
   }, [id, navigate, setLogin, setTodo]);
 

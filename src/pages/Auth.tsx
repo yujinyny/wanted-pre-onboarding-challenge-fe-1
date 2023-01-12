@@ -8,14 +8,15 @@ import Input from "../components/common/Input";
 import Button from "../components/common/Button";
 import { useSetRecoilState } from "recoil";
 import { loginState } from "../atom/auth";
-import { auth } from "../api/auth";
+import { login, signUp } from "../api/auth";
+import axios from "axios";
 
 const SignUp = () => {
-  const setLogin = useSetRecoilState(loginState);
-
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { type } = useParams();
+
+  const setLogin = useSetRecoilState(loginState);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,6 +25,8 @@ const SignUp = () => {
   const [pwSuccess, setPwSuccess] = useState(false);
   const [emailMessage, setEmailMessage] = useState(false);
   const [pwMessage, setPwMessage] = useState(false);
+
+  const data = { email, password };
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -61,16 +64,27 @@ const SignUp = () => {
     }
   }, [email, password]);
 
-  const onSubmit = () => {
-    auth(type as string, email, password)
+  const onSignUp = () => {
+    signUp(data)
       .then((res) => {
-        if (type === "signUp") {
-          navigate("/auth/login");
-        } else {
-          localStorage.setItem("token", res.data.token);
-          setLogin(true);
-          navigate("/");
-        }
+        alert(res.message);
+        navigate("/auth/login");
+        setEmail("");
+        setPassword("");
+      })
+      .catch((err) => {
+        alert(err.response.data.details);
+      });
+  };
+
+  const onLogin = () => {
+    login(data)
+      .then((res) => {
+        alert(res.message);
+        localStorage.setItem("token", res.token);
+        axios.defaults.headers.Authorization = localStorage.getItem("token");
+        setLogin(true);
+        navigate("/");
         setEmail("");
         setPassword("");
       })
@@ -112,7 +126,10 @@ const SignUp = () => {
         </div>
         {pwMessage && <ErrorMessage text="8자 이상 입력" />}
       </InputBox>
-      <Button onClick={onSubmit} disabled={!(emailSuccess && pwSuccess)}>
+      <Button
+        onClick={() => (type === "signUp" ? onSignUp() : onLogin())}
+        disabled={!(emailSuccess && pwSuccess)}
+      >
         {type === "signUp" ? "회원가입" : "로그인"}
       </Button>
     </Wrapper>

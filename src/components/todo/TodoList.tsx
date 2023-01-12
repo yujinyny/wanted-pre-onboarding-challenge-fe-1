@@ -18,39 +18,27 @@ const TodoList = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
+  const data = { title, content };
+
   useEffect(() => {
     getTodos()
       .then((res) => {
-        setTodos(res.data.data);
+        setTodos(res.data);
       })
       .catch((err) => {
-        if (err.response.status === 401) {
-          localStorage.removeItem("token");
-          setLogin(false);
-          alert("유효하지 않는 토큰입니다");
-          navigate("/auth/login");
-        } else {
-          alert(err.response.data.details);
-        }
+        alert(err.response.data.details);
       });
   }, [navigate, setLogin, setTodos]);
 
   const onCreate = () => {
-    createTodo(title, content)
+    createTodo(data)
       .then((res) => {
-        setTodos([...todos, res.data.data]);
+        setTodos([...todos, res.data]);
         setTitle("");
         setContent("");
       })
       .catch((err) => {
-        if (err.response.status === 401) {
-          localStorage.removeItem("token");
-          setLogin(false);
-          alert("유효하지 않는 토큰입니다");
-          navigate("/auth/login");
-        } else {
-          alert(err.response.data.details);
-        }
+        alert(err.response.data.details);
       });
   };
 
@@ -114,5 +102,4 @@ export const TodoInput = styled.input`
 `;
 const Button = styled.button`
   margin-left: 10px;
-  cursor: pointer;
 `;

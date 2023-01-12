@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { deleteTodo, getTodo, updateTodo } from "../../api/todo";
+import { deleteTodo, getTodoById, updateTodo } from "../../api/todo";
 import { loginState } from "../../atom/auth";
 import { detailTodoState, todosState } from "../../atom/todo";
 import { TodoType } from "../../types/todo";
@@ -22,10 +22,12 @@ const Todo = ({ todo }: { todo: TodoType }) => {
   const [updateContent, setUpdateContent] = useState(content);
   const [currentTodoId, setCurrentTodoId] = useState("");
 
+  const data = { title: updateTitle, content: updateContent };
+
   const onClickTodo = (id: string) => {
-    getTodo(id)
+    getTodoById(id)
       .then((res) => {
-        setTodo(res.data.data);
+        setTodo(res.data);
         setCurrentTodoId(id);
       })
       .catch((err) => {
@@ -41,31 +43,24 @@ const Todo = ({ todo }: { todo: TodoType }) => {
   };
 
   const onUpdate = (id: string) => {
-    updateTodo(id, updateTitle, updateContent)
+    updateTodo(id, data)
       .then((res) => {
         setTodos([
           ...todos.map((todo) => {
-            if (todo.id === res.data.data.id) {
-              return res.data.data;
+            if (todo.id === res.data.id) {
+              return res.data;
             } else {
               return todo;
             }
           }),
         ]);
-        if (id === currentTodoId) setTodo(res.data.data);
+        if (id === currentTodoId) setTodo(res.data);
         setUpdateTitle("");
         setUpdateContent("");
         setIsEdit(false);
       })
       .catch((err) => {
-        if (err.response.status === 401) {
-          localStorage.removeItem("token");
-          setLogin(false);
-          alert("유효하지 않는 토큰입니다");
-          navigate("/auth/login");
-        } else {
-          alert(err.response.data.details);
-        }
+        alert(err.response.data.details);
       });
   };
 
@@ -73,17 +68,10 @@ const Todo = ({ todo }: { todo: TodoType }) => {
     deleteTodo(id)
       .then((res) => {
         setTodos([...todos.filter((todo) => todo.id !== id)]);
-        if (id === currentTodoId) setTodo(res.data.data);
+        if (id === currentTodoId) setTodo(res.data);
       })
       .catch((err) => {
-        if (err.response.status === 401) {
-          localStorage.removeItem("token");
-          setLogin(false);
-          alert("유효하지 않는 토큰입니다");
-          navigate("/auth/login");
-        } else {
-          alert(err.response.data.details);
-        }
+        alert(err.response.data.details);
       });
   };
 
@@ -125,37 +113,37 @@ const Todo = ({ todo }: { todo: TodoType }) => {
       <TodoButtons>
         {isEdit ? (
           <div>
-            <button
+            <TodoButton
               onClick={() => {
                 onUpdate(id);
               }}
             >
               저장
-            </button>
-            <button
+            </TodoButton>
+            <TodoButton
               onClick={() => {
                 setIsEdit(false);
               }}
             >
               취소
-            </button>
+            </TodoButton>
           </div>
         ) : (
-          <button
+          <TodoButton
             onClick={() => {
               setIsEdit(true);
             }}
           >
             수정
-          </button>
+          </TodoButton>
         )}
-        <button
+        <TodoButton
           onClick={() => {
             onDelete(id);
           }}
         >
           삭제
-        </button>
+        </TodoButton>
       </TodoButtons>
     </LiBlock>
   );
@@ -199,7 +187,6 @@ const TodoButtons = styled.div`
       margin-left: 5px;
     }
   }
-  button {
-    cursor: pointer;
-  }
 `;
+
+const TodoButton = styled.button``;

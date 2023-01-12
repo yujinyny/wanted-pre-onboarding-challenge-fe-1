@@ -57,7 +57,6 @@ const Ul = styled.ul`
   display: flex;
   button {
     margin: 10px;
-    cursor: pointer;
   }
   button:hover {
     color: lightgray;

@@ -1,71 +1,37 @@
 import axios from "axios";
 
+interface TodoCUDataType {
+  title: string;
+  content: string;
+}
+
 const API_URL = process.env.REACT_APP_API_URL;
 
-export const getTodos = () => {
-  const res = axios.get(`${API_URL}/todos`, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
-  });
+export const getTodos = async () => {
+  const res = await axios.get(`${API_URL}/todos`);
 
-  return res;
+  return res.data;
 };
 
-export const getTodo = (id: string) => {
-  const res = axios.get(`${API_URL}/todos/${id}`, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
-  });
+export const getTodoById = async (id: string) => {
+  const res = await axios.get(`${API_URL}/todos/${id}`);
 
-  return res;
+  return res.data;
 };
 
-export const createTodo = (title: string, content: string) => {
-  const res = axios.post(
-    `${API_URL}/todos`,
-    {
-      title,
-      content,
-    },
-    {
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-    }
-  );
-
-  return res;
+export const createTodo = async (data: TodoCUDataType) => {
+  const res = await axios.post(`${API_URL}/todos`, data);
+  return res.data;
 };
 
-export const updateTodo = (
-  id: string,
-  updateTitle: string,
-  updateContent: string
-) => {
-  const res = axios.put(
-    `${API_URL}/todos/${id}`,
-    {
-      title: updateTitle,
-      content: updateContent,
-    },
-    {
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-    }
-  );
+export const updateTodo = async (id: string, data: TodoCUDataType) => {
+  const res = await axios.put(`${API_URL}/todos/${id}`, data);
 
-  return res;
+  return res.data;
 };
 
-export const deleteTodo = (id: string) => {
-  const res = axios.delete(`${API_URL}/todos/${id}`, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
-  });
+export const deleteTodo = async (id: string) => {
+  const res = await axios.delete(`${API_URL}/todos/${id}`);
 
-  return res;
+  return res.data;
 };
