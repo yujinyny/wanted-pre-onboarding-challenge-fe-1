@@ -11,6 +11,7 @@ import { loginState } from "../atom/auth";
 import { login, signUp } from "../api/auth";
 import Title from "../components/common/Title";
 import instance from "../api/root";
+import React from "react";
 
 const SignUp = () => {
   const navigate = useNavigate();

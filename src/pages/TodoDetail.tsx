@@ -7,6 +7,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { detailTodoState } from "../atom/todo";
 import { getTodoById } from "../api/todo";
 import Title from "../components/common/Title";
+import React from "react";
 
 const TodoDetail = () => {
   const navigate = useNavigate();

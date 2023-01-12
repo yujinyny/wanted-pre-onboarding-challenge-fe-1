@@ -7,6 +7,7 @@ import TodoDetail from "./pages/TodoDetail";
 import { useSetRecoilState } from "recoil";
 import { loginState } from "./atom/auth";
 import instance from "./api/root";
+import React from "react";
 
 function App() {
   const setLogin = useSetRecoilState(loginState);
