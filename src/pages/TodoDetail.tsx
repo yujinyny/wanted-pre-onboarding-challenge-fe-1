@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Wrapper from "../components/common/Wrapper";
-import { Title } from "./Auth";
 import TodoDetailCompo from "../components/todo/TodoDetail";
 import { loginState } from "../atom/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { detailTodoState } from "../atom/todo";
 import { getTodoById } from "../api/todo";
+import Title from "../components/common/Title";
 
 const TodoDetail = () => {
   const navigate = useNavigate();

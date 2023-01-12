@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TodoDetail from "./TodoDetail";
@@ -7,8 +7,9 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loginState } from "../../atom/auth";
 import { detailTodoState, todosState } from "../../atom/todo";
 import { createTodo, getTodos } from "../../api/todo";
+import Input from "../common/Input";
 
-const TodoList = () => {
+const Todos = () => {
   const navigate = useNavigate();
 
   const setLogin = useSetRecoilState(loginState);
@@ -18,7 +19,7 @@ const TodoList = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const data = { title, content };
+  const inputData = { title, content };
 
   useEffect(() => {
     getTodos()
@@ -30,8 +31,8 @@ const TodoList = () => {
       });
   }, [navigate, setLogin, setTodos]);
 
-  const onCreate = () => {
-    createTodo(data)
+  const handleCreateTodo = () => {
+    createTodo(inputData)
       .then((res) => {
         setTodos([...todos, res.data]);
         setTitle("");
@@ -45,27 +46,31 @@ const TodoList = () => {
   return (
     <Block>
       <div>
-        <Todos>
+        <TodosBlock>
           {todos.length ? (
             todos.map((todo) => <Todo key={todo.id} todo={todo} />)
           ) : (
             <div>투두 리스트가 없습니다</div>
           )}
-        </Todos>
+        </TodosBlock>
         <div>
           <TodoInput
             type="text"
             placeholder="제목"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e: { target: { value: SetStateAction<string> } }) =>
+              setTitle(e.target.value)
+            }
           />
           <TodoInput
             type="text"
             placeholder="내용"
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e: { target: { value: SetStateAction<string> } }) =>
+              setContent(e.target.value)
+            }
           />
-          <Button onClick={onCreate}>추가</Button>
+          <Button onClick={handleCreateTodo}>추가</Button>
         </div>
       </div>
       {todo ? <TodoDetail /> : <div>자세히 보고 싶은 투두를 선택해주세요</div>}
@@ -73,7 +78,7 @@ const TodoList = () => {
   );
 };
 
-export default TodoList;
+export default Todos;
 
 const Block = styled.div`
   display: flex;
@@ -86,19 +91,16 @@ const Block = styled.div`
   }
 `;
 
-const Todos = styled.ul`
+const TodosBlock = styled.ul`
   height: 300px;
   margin-bottom: 10px;
   padding-right: 10px;
   overflow-y: scroll;
 `;
 
-export const TodoInput = styled.input`
-  padding: 7px 10px;
+export const TodoInput = styled(Input)`
   border: 1px solid gray;
-  :focus {
-    background-color: lightgray;
-  }
+  border-radius: 3px;
 `;
 const Button = styled.button`
   margin-left: 10px;

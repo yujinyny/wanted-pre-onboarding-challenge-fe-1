@@ -1,15 +1,14 @@
 import { Link } from "react-router-dom";
-import Title from "../components/common/Title";
 import Wrapper from "../components/common/Wrapper";
-import TodoList from "../components/todo/TodoList";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { loginState } from "../atom/auth";
+import Todos from "../components/todo/Todos";
 
 const Home = () => {
   const [isLogin, setLogin] = useRecoilState(loginState);
 
-  const onLogout = () => {
+  const handleLogout = () => {
     localStorage.removeItem("token");
     setLogin(false);
   };
@@ -21,7 +20,7 @@ const Home = () => {
         {isLogin ? (
           <Ul>
             <li>
-              <button onClick={onLogout}>로그아웃</button>
+              <button onClick={handleLogout}>로그아웃</button>
             </li>
           </Ul>
         ) : (
@@ -41,7 +40,7 @@ const Home = () => {
       </Box>
       <Box>
         <Title>Todos</Title>
-        {isLogin ? <TodoList /> : <span>로그인 후 조회 가능합니다</span>}
+        {isLogin ? <Todos /> : <span>로그인 후 조회 가능합니다</span>}
       </Box>
     </Wrapper>
   );
@@ -61,4 +60,11 @@ const Ul = styled.ul`
   button:hover {
     color: lightgray;
   }
+`;
+
+const Title = styled.h1`
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
 `;

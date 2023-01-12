@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -6,7 +6,7 @@ import { deleteTodo, getTodoById, updateTodo } from "../../api/todo";
 import { loginState } from "../../atom/auth";
 import { detailTodoState, todosState } from "../../atom/todo";
 import { TodoType } from "../../types/todo";
-import { TodoInput } from "./TodoList";
+import { TodoInput } from "./Todos";
 
 const Todo = ({ todo }: { todo: TodoType }) => {
   const navigate = useNavigate();
@@ -17,14 +17,14 @@ const Todo = ({ todo }: { todo: TodoType }) => {
   const [todos, setTodos] = useRecoilState(todosState);
   const setTodo = useSetRecoilState(detailTodoState);
 
-  const [isEdit, setIsEdit] = useState(false);
-  const [updateTitle, setUpdateTitle] = useState(title);
-  const [updateContent, setUpdateContent] = useState(content);
+  const [isEdit, setEdit] = useState(false);
+  const [updatedTitle, setUpdateTitle] = useState(title);
+  const [updatedContent, setUpdateContent] = useState(content);
   const [currentTodoId, setCurrentTodoId] = useState("");
 
-  const data = { title: updateTitle, content: updateContent };
+  const inputData = { title: updatedTitle, content: updatedContent };
 
-  const onClickTodo = (id: string) => {
+  const handleClickTodo = (id: string) => {
     getTodoById(id)
       .then((res) => {
         setTodo(res.data);
@@ -42,8 +42,8 @@ const Todo = ({ todo }: { todo: TodoType }) => {
       });
   };
 
-  const onUpdate = (id: string) => {
-    updateTodo(id, data)
+  const handleUpdateTodo = (id: string) => {
+    updateTodo(id, inputData)
       .then((res) => {
         setTodos([
           ...todos.map((todo) => {
@@ -57,14 +57,14 @@ const Todo = ({ todo }: { todo: TodoType }) => {
         if (id === currentTodoId) setTodo(res.data);
         setUpdateTitle("");
         setUpdateContent("");
-        setIsEdit(false);
+        setEdit(false);
       })
       .catch((err) => {
         alert(err.response.data.details);
       });
   };
 
-  const onDelete = (id: string) => {
+  const handleDeleteTodo = (id: string) => {
     deleteTodo(id)
       .then((res) => {
         setTodos([...todos.filter((todo) => todo.id !== id)]);
@@ -82,22 +82,26 @@ const Todo = ({ todo }: { todo: TodoType }) => {
           <p>
             <span>제목</span>
             <TodoInput
-              value={updateTitle}
-              onChange={(e) => setUpdateTitle(e.target.value)}
+              value={updatedTitle}
+              onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                setUpdateTitle(e.target.value)
+              }
             />
           </p>
           <p>
             <span>내용</span>
             <TodoInput
-              value={updateContent}
-              onChange={(e) => setUpdateContent(e.target.value)}
+              value={updatedContent}
+              onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                setUpdateContent(e.target.value)
+              }
             />
           </p>
         </TodoEditContent>
       ) : (
         <TodoDefaultContent
           onClick={() => {
-            onClickTodo(id);
+            handleClickTodo(id);
           }}
         >
           <p>
@@ -113,37 +117,37 @@ const Todo = ({ todo }: { todo: TodoType }) => {
       <TodoButtons>
         {isEdit ? (
           <div>
-            <TodoButton
+            <button
               onClick={() => {
-                onUpdate(id);
+                handleUpdateTodo(id);
               }}
             >
               저장
-            </TodoButton>
-            <TodoButton
+            </button>
+            <button
               onClick={() => {
-                setIsEdit(false);
+                setEdit(false);
               }}
             >
               취소
-            </TodoButton>
+            </button>
           </div>
         ) : (
-          <TodoButton
+          <button
             onClick={() => {
-              setIsEdit(true);
+              setEdit(true);
             }}
           >
             수정
-          </TodoButton>
+          </button>
         )}
-        <TodoButton
+        <button
           onClick={() => {
-            onDelete(id);
+            handleDeleteTodo(id);
           }}
         >
           삭제
-        </TodoButton>
+        </button>
       </TodoButtons>
     </LiBlock>
   );
@@ -188,5 +192,3 @@ const TodoButtons = styled.div`
     }
   }
 `;
-
-const TodoButton = styled.button``;

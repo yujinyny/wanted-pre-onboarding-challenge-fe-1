@@ -10,6 +10,6 @@ export default Title;
 const Block = styled.h1`
   font-size: 32px;
   font-weight: 600;
-  margin-bottom: 30px;
+  margin-bottom: 60px;
   text-align: center;
 `;

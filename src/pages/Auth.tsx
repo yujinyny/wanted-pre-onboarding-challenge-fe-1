@@ -10,6 +10,7 @@ import { useSetRecoilState } from "recoil";
 import { loginState } from "../atom/auth";
 import { login, signUp } from "../api/auth";
 import axios from "axios";
+import Title from "../components/common/Title";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -21,51 +22,50 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [emailSuccess, setEmailSuccess] = useState(false);
-  const [pwSuccess, setPwSuccess] = useState(false);
-  const [emailMessage, setEmailMessage] = useState(false);
-  const [pwMessage, setPwMessage] = useState(false);
+  const [isSuccessEmail, setSuccessEmail] = useState(false);
+  const [isSuccessPw, setSuccessPw] = useState(false);
+  const [isErrorMessageEmail, setErrorMessageEmail] = useState(false);
+  const [isErrorMessagePw, setErrorMessagePw] = useState(false);
 
-  const data = { email, password };
+  const inputData = { email, password };
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (type === "login" && localStorage.getItem("token")) {
       alert("이미 로그인 중입니다");
       navigate("/");
     }
-  }, [navigate]);
+  }, [navigate, type]);
 
   // 유효성 검사
   useEffect(() => {
     if (!email) {
-      setEmailMessage(false);
-      setEmailSuccess(false);
+      setErrorMessageEmail(false);
+      setSuccessEmail(false);
     } else {
       if (email.includes("@") && email.includes(".")) {
-        setEmailMessage(false);
-        setEmailSuccess(true);
+        setErrorMessageEmail(false);
+        setSuccessEmail(true);
       } else {
-        setEmailMessage(true);
-        setEmailSuccess(false);
+        setErrorMessageEmail(true);
+        setSuccessEmail(false);
       }
     }
-
     if (!password) {
-      setPwMessage(false);
-      setPwSuccess(false);
+      setErrorMessagePw(false);
+      setSuccessPw(false);
     } else {
       if (password.length >= 8) {
-        setPwMessage(false);
-        setPwSuccess(true);
+        setErrorMessagePw(false);
+        setSuccessPw(true);
       } else {
-        setPwMessage(true);
-        setPwSuccess(false);
+        setErrorMessagePw(true);
+        setSuccessPw(false);
       }
     }
   }, [email, password]);
 
-  const onSignUp = () => {
-    signUp(data)
+  const handleSignUp = () => {
+    signUp(inputData)
       .then((res) => {
         alert(res.message);
         navigate("/auth/login");
@@ -77,8 +77,8 @@ const SignUp = () => {
       });
   };
 
-  const onLogin = () => {
-    login(data)
+  const handleLogin = () => {
+    login(inputData)
       .then((res) => {
         alert(res.message);
         localStorage.setItem("token", res.token);
@@ -109,7 +109,7 @@ const SignUp = () => {
             }}
           />
         </div>
-        {emailMessage && <ErrorMessage text="최소 @, . 포함" />}
+        {isErrorMessageEmail && <ErrorMessage text="최소 @, . 포함" />}
       </InputBox>
       <InputBox>
         <div>
@@ -124,11 +124,11 @@ const SignUp = () => {
             }}
           />
         </div>
-        {pwMessage && <ErrorMessage text="8자 이상 입력" />}
+        {isErrorMessagePw && <ErrorMessage text="8자 이상 입력" />}
       </InputBox>
       <Button
-        onClick={() => (type === "signUp" ? onSignUp() : onLogin())}
-        disabled={!(emailSuccess && pwSuccess)}
+        onClick={() => (type === "signUp" ? handleSignUp() : handleLogin())}
+        disabled={!(isSuccessEmail && isSuccessPw)}
       >
         {type === "signUp" ? "회원가입" : "로그인"}
       </Button>
@@ -145,11 +145,4 @@ export const InputBox = styled.div`
     display: flex;
     align-items: center;
   }
-`;
-
-export const Title = styled.h1`
-  font-size: 32px;
-  font-weight: 600;
-  margin-bottom: 60px;
-  text-align: center;
 `;

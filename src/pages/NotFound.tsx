@@ -11,7 +11,7 @@ const NotFound = () => {
 
 export default NotFound;
 
-const Title = styled.div`
+const Title = styled.h1`
   font-size: 24px;
   font-weight: 600;
   text-align: center;
