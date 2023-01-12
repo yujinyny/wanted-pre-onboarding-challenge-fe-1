@@ -4,7 +4,7 @@ import Wrapper from "../components/common/Wrapper";
 import TodoList from "../components/todo/TodoList";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
-import { loginState } from "../atom";
+import { loginState } from "../atom/auth";
 
 const Home = () => {
   const [isLogin, setLogin] = useRecoilState(loginState);

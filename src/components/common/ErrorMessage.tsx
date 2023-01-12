@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const ErrorMessage = ({ text }) => {
+const ErrorMessage = ({ text }: { text: string }) => {
   return <Block>{text}</Block>;
 };
 

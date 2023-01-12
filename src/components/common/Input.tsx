@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Input = (props) => {
+const Input = (props: any) => {
   return <Block {...props} />;
 };
 

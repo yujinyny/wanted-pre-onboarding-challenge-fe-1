@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import Wrapper from "../components/common/Wrapper";
@@ -8,7 +8,7 @@ import ErrorMessage from "../components/common/ErrorMessage";
 import Input from "../components/common/Input";
 import Button from "../components/common/Button";
 import { useSetRecoilState } from "recoil";
-import { loginState } from "../atom";
+import { loginState } from "../atom/auth";
 
 const SignUp = () => {
   const setLogin = useSetRecoilState(loginState);
@@ -99,7 +99,7 @@ const SignUp = () => {
             name="signup"
             id="email"
             value={email}
-            onChange={(e) => {
+            onChange={(e: { target: { value: SetStateAction<string> } }) => {
               setEmail(e.target.value);
             }}
           />
@@ -114,7 +114,7 @@ const SignUp = () => {
             name="signup"
             id="password"
             value={password}
-            onChange={(e) => {
+            onChange={(e: { target: { value: SetStateAction<string> } }) => {
               setPassword(e.target.value);
             }}
           />

@@ -1,6 +1,12 @@
+import { ReactNode } from "react";
 import styled from "styled-components";
 
-const Label = ({ htmlFor, children }) => {
+interface LabelProps {
+  htmlFor: string;
+  children: ReactNode;
+}
+
+const Label = ({ htmlFor, children }: LabelProps) => {
   return <Block htmlFor={htmlFor}>{children}</Block>;
 };
 

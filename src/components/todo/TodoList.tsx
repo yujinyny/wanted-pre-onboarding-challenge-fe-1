@@ -5,14 +5,15 @@ import styled from "styled-components";
 import TodoDetail from "./TodoDetail";
 import Todo from "./Todo";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { loginState, todosState, todoState } from "../../atom";
+import { loginState } from "../../atom/auth";
+import { detailTodoState, todosState } from "../../atom/todo";
 
 const TodoList = () => {
   const navigate = useNavigate();
 
   const setLogin = useSetRecoilState(loginState);
   const [todos, setTodos] = useRecoilState(todosState);
-  const todo = useRecoilValue(todoState);
+  const todo = useRecoilValue(detailTodoState);
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -75,7 +76,7 @@ const TodoList = () => {
       <div>
         <Todos>
           {todos.length ? (
-            todos.map((todoEl) => <Todo key={todoEl.id} todoEl={todoEl} />)
+            todos.map((todo) => <Todo key={todo.id} todo={todo} />)
           ) : (
             <div>투두 리스트가 없습니다</div>
           )}

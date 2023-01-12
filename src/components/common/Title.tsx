@@ -1,6 +1,7 @@
+import { ReactNode } from "react";
 import styled from "styled-components";
 
-const Title = ({ children }) => {
+const Title = ({ children }: { children: ReactNode }) => {
   return <Block>{children}</Block>;
 };
 

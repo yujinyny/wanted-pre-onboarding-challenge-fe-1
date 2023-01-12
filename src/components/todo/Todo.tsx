@@ -3,22 +3,26 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { loginState, todosState, todoState } from "../../atom";
+import { loginState } from "../../atom/auth";
+import { detailTodoState, todosState } from "../../atom/todo";
+import { TodoType } from "../../types/todo";
 import { TodoInput } from "./TodoList";
 
-const Todo = ({ todoEl }) => {
+const Todo = ({ todo }: { todo: TodoType }) => {
   const navigate = useNavigate();
+
+  const { id, title, content } = todo;
 
   const setLogin = useSetRecoilState(loginState);
   const [todos, setTodos] = useRecoilState(todosState);
-  const setTodo = useSetRecoilState(todoState);
+  const setTodo = useSetRecoilState(detailTodoState);
 
   const [isEdit, setIsEdit] = useState(false);
-  const [updateTitle, setUpdateTitle] = useState(todoEl.title);
-  const [updateContent, setUpdateContent] = useState(todoEl.content);
+  const [updateTitle, setUpdateTitle] = useState(title);
+  const [updateContent, setUpdateContent] = useState(content);
   const [currentTodoId, setCurrentTodoId] = useState("");
 
-  const onClickTodo = (id) => {
+  const onClickTodo = (id: string) => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/todos/${id}`, {
         headers: {
@@ -41,7 +45,7 @@ const Todo = ({ todoEl }) => {
       });
   };
 
-  const onUpdate = (id) => {
+  const onUpdate = (id: string) => {
     axios
       .put(
         `${process.env.REACT_APP_API_URL}/todos/${id}`,
@@ -82,7 +86,7 @@ const Todo = ({ todoEl }) => {
       });
   };
 
-  const onDelete = (id) => {
+  const onDelete = (id: string) => {
     axios
       .delete(`${process.env.REACT_APP_API_URL}/todos/${id}`, {
         headers: {
@@ -127,16 +131,16 @@ const Todo = ({ todoEl }) => {
       ) : (
         <TodoDefaultContent
           onClick={() => {
-            onClickTodo(todoEl.id);
+            onClickTodo(id);
           }}
         >
           <p>
             <span>제목</span>
-            {todoEl.title}
+            {title}
           </p>
           <p>
             <span>내용</span>
-            {todoEl.content}
+            {content}
           </p>
         </TodoDefaultContent>
       )}
@@ -145,7 +149,7 @@ const Todo = ({ todoEl }) => {
           <div>
             <button
               onClick={() => {
-                onUpdate(todoEl.id);
+                onUpdate(id);
               }}
             >
               저장
@@ -169,7 +173,7 @@ const Todo = ({ todoEl }) => {
         )}
         <button
           onClick={() => {
-            onDelete(todoEl.id);
+            onDelete(id);
           }}
         >
           삭제

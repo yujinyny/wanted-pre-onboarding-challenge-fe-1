@@ -4,8 +4,9 @@ import axios from "axios";
 import Wrapper from "../components/common/Wrapper";
 import { Title } from "./Auth";
 import TodoDetailCompo from "../components/todo/TodoDetail";
-import { loginState, todoState } from "../atom";
+import { loginState } from "../atom/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
+import { detailTodoState } from "../atom/todo";
 
 const TodoDetail = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const TodoDetail = () => {
   const { pathname } = useLocation();
 
   const setLogin = useSetRecoilState(loginState);
-  const [todo, setTodo] = useRecoilState(todoState);
+  const [todo, setTodo] = useRecoilState(detailTodoState);
 
   useEffect(() => {
     axios

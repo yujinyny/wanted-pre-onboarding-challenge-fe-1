@@ -1,6 +1,13 @@
+import { ReactNode } from "react";
 import styled from "styled-components";
 
-const Button = ({ onClick, disabled, children }) => {
+interface ButtonProps {
+  onClick: () => void;
+  disabled: boolean;
+  children: ReactNode;
+}
+
+const Button = ({ onClick, disabled, children }: ButtonProps) => {
   return (
     <Block onClick={onClick} disabled={disabled}>
       {children}

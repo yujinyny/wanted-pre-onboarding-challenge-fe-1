@@ -6,7 +6,7 @@ import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
 import TodoDetail from "./pages/TodoDetail";
 import { useSetRecoilState } from "recoil";
-import { loginState } from "./atom";
+import { loginState } from "./atom/auth";
 
 function App() {
   const setLogin = useSetRecoilState(loginState);
