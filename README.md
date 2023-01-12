@@ -10,6 +10,7 @@
 
 ## ⛏️ 기술 스택
 
+- TypeScript
 - React
 - React Router
 - Recoil
@@ -20,10 +21,13 @@
 
 ### [1회차] 23.01.10 ~ 23.01.12
 
-- 프로젝트 구조 리팩토링 (관심사 분리)
-- 변수, 함수명 변경
-- axios Instance 생성
-- TypeScript 적용
+- 프로젝트 구조 리팩토링
+  - [api 폴더 생성](https://github.com/yujinyny/wanted-pre-onboarding-challenge-fe-1/commit/adb278fddac36218f9bd736cc3d8617b84acb131)
+    - [api 코드 리팩토링](https://github.com/yujinyny/wanted-pre-onboarding-challenge-fe-1/commit/ff5640b11938140cd4ba53ddf54adf8ac7c877b3)
+  - [styles 폴더 생성](https://github.com/yujinyny/wanted-pre-onboarding-challenge-fe-1/commit/8e09fd5243289b22556bf39a2b6a253661bd70b4)
+- [변수/함수명 변경](https://github.com/yujinyny/wanted-pre-onboarding-challenge-fe-1/commit/96d4628f249a1124d050bc9ab97274a0f1d7fd76)
+- [axios Instance 생성](https://github.com/yujinyny/wanted-pre-onboarding-challenge-fe-1/commit/5fbe03b143185ec0701de30ccfb660f3778e46ef)
+- [TypeScript 적용](https://github.com/yujinyny/wanted-pre-onboarding-challenge-fe-1/commit/daeed1e86b918192d7c7c72828c6843c5c2d0550)
 
 ## ✅ 과제
 
@@ -47,7 +51,7 @@
     <div><img width="400" alt="image" src="https://user-images.githubusercontent.com/74370531/211034344-7af46e13-237a-4822-a15c-0df49adce2b9.gif">
     <img width="400" alt="image" src="https://user-images.githubusercontent.com/74370531/211034554-f35fee95-6b4d-488b-8b66-753e74153b39.png"></div>
   - [X] 어떤 경우든 토큰이 유효하지 않다면 사용자에게 알리고 로그인 페이지로 리다이렉트 시켜주세요
-    <div><img width="400" alt="image" src="https://user-images.githubusercontent.com/74370531/211034473-a7479e3c-61e9-4167-809d-70f76577c9f0.png"></div>
+    <div><img width="400" alt="image" src="https://user-images.githubusercontent.com/74370531/211992136-4f73fb9f-5d2b-4700-b59a-9c9191b5e45c.png"></div>
 
 ### 2 - Todo List
 
