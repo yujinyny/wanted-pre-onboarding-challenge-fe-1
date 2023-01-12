@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import TodoDetail from "./pages/TodoDetail";
 import { useSetRecoilState } from "recoil";
 import { loginState } from "./atom/auth";
-import axios from "axios";
+import instance from "./api/root";
 
 function App() {
   const setLogin = useSetRecoilState(loginState);
@@ -14,7 +14,7 @@ function App() {
   // 새로고침 할 때마다 적용
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      axios.defaults.headers.Authorization = localStorage.getItem("token");
+      instance.defaults.headers.Authorization = localStorage.getItem("token");
       setLogin(true);
     }
   }, [setLogin]);

@@ -9,8 +9,8 @@ import Button from "../components/common/Button";
 import { useSetRecoilState } from "recoil";
 import { loginState } from "../atom/auth";
 import { login, signUp } from "../api/auth";
-import axios from "axios";
 import Title from "../components/common/Title";
+import instance from "../api/root";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -82,7 +82,7 @@ const SignUp = () => {
       .then((res) => {
         alert(res.message);
         localStorage.setItem("token", res.token);
-        axios.defaults.headers.Authorization = localStorage.getItem("token");
+        instance.defaults.headers.Authorization = localStorage.getItem("token");
         setLogin(true);
         navigate("/");
         setEmail("");
