@@ -16,6 +16,15 @@
 - styled-components
 - axios
 
+## ♻️ 개선 사항
+
+### [1회차] 23.01.10 ~ 23.01.12
+
+- 프로젝트 구조 리팩토링 (관심사 분리)
+- 변수, 함수명 변경
+- axios Instance 생성
+- TypeScript 적용
+
 ## ✅ 과제
 
 ### 1 - Login / SignUp
