@@ -1,19 +1,15 @@
-import { useState, useEffect, SetStateAction } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, SetStateAction } from "react";
 import styled from "styled-components";
 import TodoDetail from "./TodoDetail";
 import Todo from "./Todo";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { loginState } from "../../atom/auth";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { detailTodoState, todosState } from "../../atom/todo";
 import { createTodo, getTodos } from "../../api/todo";
 import Input from "../common/Input";
 import React from "react";
+import { useQuery, useMutation } from "react-query";
 
 const Todos = () => {
-  const navigate = useNavigate();
-
-  const setLogin = useSetRecoilState(loginState);
   const [todos, setTodos] = useRecoilState(todosState);
   const todo = useRecoilValue(detailTodoState);
 
@@ -22,27 +18,22 @@ const Todos = () => {
 
   const inputData = { title, content };
 
-  useEffect(() => {
-    getTodos()
-      .then((res) => {
-        setTodos(res.data);
-      })
-      .catch((err) => {
-        alert(err.response.data.details);
-      });
-  }, [navigate, setLogin, setTodos]);
+  const { data: getTodoData } = useQuery("getTodo", getTodos, {
+    onSuccess: (data) => {
+      setTodos(data.data);
+    },
+  });
 
-  const handleCreateTodo = () => {
-    createTodo(inputData)
-      .then((res) => {
-        setTodos([...todos, res.data]);
+  const { mutate: createTodoMutate } = useMutation(
+    () => createTodo(inputData),
+    {
+      onSuccess: (data) => {
+        setTodos([...todos, data.data]);
         setTitle("");
         setContent("");
-      })
-      .catch((err) => {
-        alert(err.response.data.details);
-      });
-  };
+      },
+    }
+  );
 
   return (
     <Block>
@@ -71,7 +62,13 @@ const Todos = () => {
               setContent(e.target.value)
             }
           />
-          <Button onClick={handleCreateTodo}>추가</Button>
+          <Button
+            onClick={() => {
+              createTodoMutate();
+            }}
+          >
+            추가
+          </Button>
         </div>
       </div>
       {todo ? <TodoDetail /> : <div>자세히 보고 싶은 투두를 선택해주세요</div>}
