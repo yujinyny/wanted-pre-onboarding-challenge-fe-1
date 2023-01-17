@@ -30,7 +30,7 @@
 - [TypeScript 적용](https://github.com/yujinyny/wanted-pre-onboarding-challenge-fe-1/commit/daeed1e86b918192d7c7c72828c6843c5c2d0550)
 
 ### [2회차] 23.01.14~23.01.17
-- [useQuery, useMutate 적용 (1차)](https://github.com/yujinyny/wanted-pre-onboarding-challenge-fe-1/commit/6ece2b4f6a1db96b49489a744044cda95f6c8a9e)
+- [useQuery, useMutation 적용 (1차)](https://github.com/yujinyny/wanted-pre-onboarding-challenge-fe-1/commit/6ece2b4f6a1db96b49489a744044cda95f6c8a9e)
 
 ## ✅ 과제
 
