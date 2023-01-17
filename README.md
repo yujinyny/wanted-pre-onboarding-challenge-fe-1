@@ -19,7 +19,7 @@
 
 ## ♻️ 개선 사항
 
-### [1회차] 23.01.10 ~ 23.01.12
+### [1회차] 23.01.11 ~ 23.01.13
 
 - 프로젝트 구조 리팩토링
   - [api 폴더 생성](https://github.com/yujinyny/wanted-pre-onboarding-challenge-fe-1/commit/adb278fddac36218f9bd736cc3d8617b84acb131)
@@ -28,6 +28,9 @@
 - [변수/함수명 변경](https://github.com/yujinyny/wanted-pre-onboarding-challenge-fe-1/commit/96d4628f249a1124d050bc9ab97274a0f1d7fd76)
 - [axios Instance 생성](https://github.com/yujinyny/wanted-pre-onboarding-challenge-fe-1/commit/5fbe03b143185ec0701de30ccfb660f3778e46ef)
 - [TypeScript 적용](https://github.com/yujinyny/wanted-pre-onboarding-challenge-fe-1/commit/daeed1e86b918192d7c7c72828c6843c5c2d0550)
+
+### [2회차] 23.01.14~23.01.17
+- [useQuery, useMutate 적용 (1차)](https://github.com/yujinyny/wanted-pre-onboarding-challenge-fe-1/commit/6ece2b4f6a1db96b49489a744044cda95f6c8a9e)
 
 ## ✅ 과제
 
