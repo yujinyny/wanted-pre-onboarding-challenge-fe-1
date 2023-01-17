@@ -8,6 +8,10 @@ import { useSetRecoilState } from "recoil";
 import { loginState } from "./atom/auth";
 import instance from "./api/root";
 import React from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+
+const queryClient = new QueryClient();
 
 function App() {
   const setLogin = useSetRecoilState(loginState);
@@ -21,14 +25,18 @@ function App() {
   }, [setLogin]);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/auth/:type" element={<SignUp />} />
-        <Route path="/todo/:id" element={<TodoDetail />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/auth/:type" element={<SignUp />} />
+          <Route path="/todo/:id" element={<TodoDetail />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+    </QueryClientProvider>
   );
 }
 

@@ -12,6 +12,7 @@ import { login, signUp } from "../api/auth";
 import Title from "../components/common/Title";
 import instance from "../api/root";
 import React from "react";
+import { useMutation } from "react-query";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -65,34 +66,26 @@ const SignUp = () => {
     }
   }, [email, password]);
 
-  const handleSignUp = () => {
-    signUp(inputData)
-      .then((res) => {
-        alert(res.message);
-        navigate("/auth/login");
-        setEmail("");
-        setPassword("");
-      })
-      .catch((err) => {
-        alert(err.response.data.details);
-      });
-  };
+  const { mutate: signUpMutate } = useMutation(() => signUp(inputData), {
+    onSuccess: (data) => {
+      alert(data.message);
+      navigate("/auth/login");
+      setEmail("");
+      setPassword("");
+    },
+  });
 
-  const handleLogin = () => {
-    login(inputData)
-      .then((res) => {
-        alert(res.message);
-        localStorage.setItem("token", res.token);
-        instance.defaults.headers.Authorization = localStorage.getItem("token");
-        setLogin(true);
-        navigate("/");
-        setEmail("");
-        setPassword("");
-      })
-      .catch((err) => {
-        alert(err.response.data.details);
-      });
-  };
+  const { mutate: loginMutate } = useMutation(() => login(inputData), {
+    onSuccess: (data) => {
+      alert(data.message);
+      localStorage.setItem("token", data.token);
+      instance.defaults.headers.Authorization = localStorage.getItem("token");
+      setLogin(true);
+      navigate("/");
+      setEmail("");
+      setPassword("");
+    },
+  });
 
   return (
     <Wrapper>
@@ -128,7 +121,7 @@ const SignUp = () => {
         {isErrorMessagePw && <ErrorMessage text="8자 이상 입력" />}
       </InputBox>
       <Button
-        onClick={() => (type === "signUp" ? handleSignUp() : handleLogin())}
+        onClick={() => (type === "signUp" ? signUpMutate() : loginMutate())}
         disabled={!(isSuccessEmail && isSuccessPw)}
       >
         {type === "signUp" ? "회원가입" : "로그인"}
